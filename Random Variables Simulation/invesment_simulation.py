@@ -7,6 +7,8 @@
 
 from random import random
 import pandas as pd
+import numpy as np
+from scipy.stats import norm
 from exponential import exp_simulation
 
 def beta_dist_1_6_inverse(u: float) -> float:
@@ -46,14 +48,34 @@ def investment_simulation(months: int) -> pd.DataFrame:
 
   return pd.DataFrame(df)
 
-def accumulated_saved(months: int) -> float:
-  df = investment_simulation(months)
-  return float(df['accumulated'].iloc[-1])
+def accumulated_saved_simulation(months: int):
+  accumulated = 0
 
-def accumulated_saved_sample(n: int, months: int) -> pd.DataFrame:
-  df = {'accumulated_saved': []}
+  for month in range(1, months + 1):
+    saved = exp_simulation(1/1000)
+    rate_of_return = beta_dist_1_6_simulation()
+    accumulated = (accumulated + saved)*(1 + rate_of_return)
 
-  for i in range(n):
-    df['accumulated_saved'].append(accumulated_saved(months))
+  return accumulated
 
-  return pd.DataFrame(df)
+def accumulated_saved_average_simulation(confidence: float):
+  accumulated = np.array([])
+
+  coef_conf = 1 - confidence
+  z = norm.ppf(1 - coef_conf/2)
+
+  error = 10000
+
+  while error > 5000:
+    accumulated_final = accumulated_saved_simulation(36)
+
+    accumulated = np.append(accumulated, accumulated_final)
+
+    n = len(accumulated)
+
+    mean = np.mean(accumulated)
+    s = np.std(accumulated)
+
+    error = z * s / (n ** 0.5) if n > 1 else error
+
+  return mean, error, n
