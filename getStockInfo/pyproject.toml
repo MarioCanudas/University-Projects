@@ -1,0 +1,16 @@
+[project]
+name = "getStockInfo"
+version = "0.1.0"
+description = "Get stock information from the internet"
+authors = [
+    { name = "macz", email = "mario.cz24@outlook.com" }
+]
+
+requires-python = ">=3.12"
+
+dependencies = [
+    "pandas==2.3.3",
+    "rich==14.2.0",
+    "typer==0.20.0",
+    "yfinance==0.2.66"
+]
