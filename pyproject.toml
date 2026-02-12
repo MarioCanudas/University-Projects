@@ -1,0 +1,28 @@
+[project]
+name = "university-projects"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.4.2",
+    "pandas>=3.0.0",
+    "rich>=14.3.2",
+    "scipy>=1.17.0",
+    "typer>=0.23.0",
+    "yfinance>=1.1.0",
+]
+
+[tool.ruff]
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = []
+
+[tool.basedpyright]
+typeCheckingMode = "standard"
+exclude = ["**/__pycache__", ".venv", "*.ipynb"]
+pythonVersion = "3.13"
+venvPath = "."
+venv = ".venv"
